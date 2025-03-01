@@ -1,27 +1,23 @@
-import {
-  IsDefined,
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  Matches,
-  MaxLength,
-  MinLength,
-  Validate,
-  ValidateIf,
-} from 'class-validator';
-
-import { Match } from '../../../shared/decorators/match.decorator';
 import { Transform } from 'class-transformer';
 import { IsCNPJ, IsCPF } from 'brazilian-class-validator';
+import {
+  IsInt,
+  IsEnum,
+  IsEmail,
+  Matches,
+  Validate,
+  IsString,
+  MaxLength,
+  IsDefined,
+  MinLength,
+  ValidateIf,
+  IsNotEmpty,
+} from 'class-validator';
 
-import { CompanyIdExistConstraint } from '../../companies/validate/company-id-exist.constraint';
 import { PersonTypeEnum } from '../enum/person-type.enum';
-import { RoleIdExistConstraint } from '../../roles/validate/role-id-exist.constraint';
-import { RolesProtectedEnum } from '../../roles/enum/roles.enum';
-import { UserIdentificationNumberAlreadyExistConstraint } from '../validate/user-identification-number-already-exist.constraint';
+import { Match } from '../../../utils/decorators/match.decorator';
 import { UserEmailAlreadyExistConstraint } from '../validate/user-email-already-exist.constraint';
+import { UserIdentificationNumberAlreadyExistConstraint } from '../validate/user-identification-number-already-exist.constraint';
 
 export class UserUpdateDto {
   @IsNotEmpty({ message: 'ID: O campo "id" é obrigatório.' })
@@ -139,20 +135,4 @@ export class UserUpdateDto {
     message: 'As senhas não coincidem-se, por favor tente novamente.',
   })
   confirmPassword: string;
-
-  @IsNotEmpty({
-    message: 'ID do Perfil de acesso: O campo "roleId" não pode ser vázio.',
-  })
-  @Validate(RoleIdExistConstraint, {
-    message: 'Não existe um Perfil com esse ID.',
-  })
-  roleId: number;
-
-  @ValidateIf((obj) => obj.roleId !== RolesProtectedEnum.ADM_GERAL)
-  @IsNotEmpty({ message: 'Empresa: O campo "companyId" é obrigátorio.' })
-  @IsInt({ message: 'Empresa: O campo "companyId" deve ser um inteiro.' })
-  @Validate(CompanyIdExistConstraint, {
-    message: 'Não existe uma Empresa com esse ID.',
-  })
-  companyId: number;
 }

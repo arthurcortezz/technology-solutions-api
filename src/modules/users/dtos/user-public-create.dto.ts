@@ -14,15 +14,13 @@ import {
   ValidateIf,
 } from 'class-validator';
 
-import { Match } from '../../../shared/decorators/match.decorator';
 import { Transform } from 'class-transformer';
 import { IsCNPJ, IsCPF } from 'brazilian-class-validator';
 
 import { PersonTypeEnum } from '../enum/person-type.enum';
+import { Match } from '../../../utils/decorators/match.decorator';
 import { UserEmailAlreadyExistConstraint } from '../validate/user-email-already-exist.constraint';
 import { UserIdentificationNumberAlreadyExistConstraint } from '../validate/user-identification-number-already-exist.constraint';
-import { IsTrueConstraint } from '../../../shared/validate/is-true.constraint';
-import { CompanyInviteCodeExistConstraint } from '../../companies/validate/company-invite-code-exist.constraint';
 
 export class UserPublicCreateDto {
   @IsDefined({
@@ -132,21 +130,4 @@ export class UserPublicCreateDto {
     message: 'As senhas não coincidem-se, por favor tente novamente.',
   })
   confirmPassword: string;
-
-  @IsNotEmpty({ message: 'Empresa: O campo "inviteCode" é obrigátorio.' })
-  @IsString({ message: 'Empresa: O campo "inviteCode" deve ser uma string.' })
-  @Validate(CompanyInviteCodeExistConstraint, {
-    message: 'Não existe uma Empresa com esse inviteCode.',
-  })
-  inviteCode: string;
-
-  @IsOptional()
-  @IsBoolean({
-    message:
-      'Necessário aceitar o termo de serviço: O campo deve ser um booleano',
-  })
-  @Validate(IsTrueConstraint, {
-    message: 'Necessário aceitar o termo de serviço',
-  })
-  hasAgreedTermService: boolean;
 }

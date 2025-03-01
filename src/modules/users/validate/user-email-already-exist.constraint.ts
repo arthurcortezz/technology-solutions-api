@@ -1,10 +1,11 @@
-import { OnModuleInit } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
+import { OnModuleInit } from '@nestjs/common';
 import {
   ValidatorConstraint,
-  ValidatorConstraintInterface,
   ValidationArguments,
+  ValidatorConstraintInterface,
 } from 'class-validator';
+
 import { UsersService } from '../users.service';
 import { UserInterface } from '../interfaces/user.interface';
 
