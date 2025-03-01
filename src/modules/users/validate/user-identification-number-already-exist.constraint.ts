@@ -1,10 +1,11 @@
-import { OnModuleInit } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
+import { OnModuleInit } from '@nestjs/common';
 import {
   ValidatorConstraint,
-  ValidatorConstraintInterface,
   ValidationArguments,
+  ValidatorConstraintInterface,
 } from 'class-validator';
+
 import { UsersService } from '../users.service';
 import { UserInterface } from '../interfaces/user.interface';
 
@@ -29,7 +30,7 @@ export class UserIdentificationNumberAlreadyExistConstraint
   ): Promise<boolean> {
     if (cpf) {
       const data: UserInterface = Object.assign(validationArguments.object);
-      const entity = await service.findByIdentificationNumber(cpf, data);
+      const entity = await service.findByCpf(cpf, data);
       return !entity;
     }
 

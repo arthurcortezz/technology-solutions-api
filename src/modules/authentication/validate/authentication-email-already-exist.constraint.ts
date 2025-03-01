@@ -9,7 +9,6 @@ import {
 import { AuthenticationService } from '../authentication.service';
 import { UserInterface } from '../../users/interfaces/user.interface';
 
-
 let service: AuthenticationService;
 
 @ValidatorConstraint({ name: 'AuthenticationEmailAlreadyExist', async: true })

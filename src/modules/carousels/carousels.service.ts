@@ -32,7 +32,6 @@ export class CarouselsService {
         order: { title: 'ASC' },
       });
     } catch (error) {
-      console.log('🚀 ~ CarouselsService ~ error:', error);
       throw new HttpException(
         { message: 'Não foi possível encontrar os carrousels.' },
         HttpStatus.INTERNAL_SERVER_ERROR,
