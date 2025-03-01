@@ -44,7 +44,6 @@ export class AuthenticationService {
 
       return { user: payload, accessToken };
     } catch (error) {
-      console.log('🚀 ~ AuthenticationService ~ error:', error);
       if (error instanceof HttpException) {
         throw error;
       }
