@@ -1,3 +1,4 @@
+import { ContactEntity } from '../modules/contacts/entities/contact.entity';
 import { CarouselEntity } from '../modules/carousels/entities/carousel.entity';
 
-export const entities = [CarouselEntity];
+export const entities = [CarouselEntity, ContactEntity];

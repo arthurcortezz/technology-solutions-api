@@ -5,13 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 
 import { AppDataSource } from './database/data-source';
-import { CarouselsModule } from './modules/carousels/carousels.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
+import { CarouselsModule } from './modules/carousels/carousels.module';
 
 @Module({
   imports: [
     AuthModule,
     ConfigModule,
+    ContactsModule,
     CarouselsModule,
     TypeOrmModule.forRoot(AppDataSource.options),
     PassportModule.register({ defaultStrategy: 'jwt' }),
