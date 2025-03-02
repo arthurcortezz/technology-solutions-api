@@ -16,7 +16,6 @@ import { CarouselPaginateEntity } from './entities/carousel.paginate.entity';
 export class CarouselsResolver {
   constructor(private readonly service: CarouselsService) {}
 
-  @Roles('CAROUSELS_LISTAR')
   @Query(() => CarouselPaginateEntity)
   async carousels(
     @Args('filters') filters: CarouselFiltersInput,

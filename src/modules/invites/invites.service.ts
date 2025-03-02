@@ -7,12 +7,16 @@ import { InviteEntity } from './entities/invites.entity';
 import { InviteCreateDto } from './dtos/invite-create.dto';
 import { InviteInterface } from './interfaces/invites-interface';
 import { MailService } from 'src/utils/nodemailer/nodemailer.service';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Injectable()
 export class InvitesService {
   constructor(
     @InjectRepository(InviteEntity)
     private readonly invitesRepository: Repository<InviteEntity>,
+
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
 
     private readonly nodemailerService: MailService,
 
@@ -153,5 +157,41 @@ export class InvitesService {
       ...invite,
       status: status,
     });
+  }
+
+  async countByStatus() {
+    try {
+      const result = await this.invitesRepository
+        .createQueryBuilder('invites')
+        .select('invites.status', 'status')
+        .addSelect('COUNT(*)', 'count')
+        .groupBy('invites.status')
+        .getRawMany();
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível listar o gráfico.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async countByRoleId() {
+    try {
+      const result = await this.usersRepository
+        .createQueryBuilder('user')
+        .innerJoin('user.role', 'role')
+        .select('role.name', 'role')
+        .addSelect('COUNT(user.id)', 'count')
+        .groupBy('role.name')
+        .getRawMany();
+
+      return result;
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível listar o gráfico.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

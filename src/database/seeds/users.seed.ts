@@ -6,7 +6,7 @@ import { UserEntity } from '../../modules/users/entities/user.entity';
 export class UsersSeed implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {
     const password =
-      '$2a$10$YgzIpypZRX2BliFVs2BI1.HYGlObf4pj2KJ1rQYbsJogXyWq28UUW';
+      '$2b$10$fA/6FHBH.6RxAUX49n8Cy.XFYbZzonsHq3qzvwf96TQWo0DUXbZ0q';
 
     const repository = dataSource.getRepository(UserEntity);
 

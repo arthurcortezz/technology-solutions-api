@@ -200,4 +200,17 @@ export class AuthenticationService {
       );
     }
   }
+
+  async findAll(): Promise<UserInterface[]> {
+    try {
+      return await this.usersRepository.find({
+        relations: ['role'],
+      });
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível encontrar os usuários.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

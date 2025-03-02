@@ -14,6 +14,7 @@ import { JWTAuthGuard } from '../../auth/jwt-auth.guard';
 import { AuthUser } from '../../utils/decorators/user.decorator';
 import { AuthenticationService } from './authentication.service';
 import { UserJwtInterface } from './interfaces/user-jwt.interface';
+import { UserInterface } from '../users/interfaces/user.interface';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -31,6 +32,19 @@ export class AuthenticationController {
   async me(@AuthUser() user: UserJwtInterface): Promise<UserJwtInterface> {
     try {
       return user;
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível obter os dados do usuário.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get('users')
+  @UseGuards(JWTAuthGuard)
+  async findAll(): Promise<UserInterface[]> {
+    try {
+      return this.service.findAll();
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível obter os dados do usuário.' },

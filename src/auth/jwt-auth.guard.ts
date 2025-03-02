@@ -17,19 +17,20 @@ export class JWTAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err: any, user: any, info: any, context: ExecutionContext) {
-    const role: string[] = this.reflector.get<string[]>(
+    const roles: string[] = this.reflector.get<string[]>(
       '',
       context.getHandler(),
     );
+
     if (
       err ||
       !user ||
-      (role && !user.privileges.find((el: any) => el.key === role))
+      (roles && !user.privileges.some((el: any) => roles.includes(el.key)))
     ) {
       throw (
         err ||
         new UnauthorizedException(
-          'Não autorizado! Você não tem permissão para acessar este recurso.',
+          'É necessário estar logado para poder realizar essa ação!',
         )
       );
     }
