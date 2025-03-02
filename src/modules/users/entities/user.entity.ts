@@ -3,12 +3,16 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Entity,
   Column,
+  OneToOne,
+  JoinColumn,
   BeforeInsert,
   UpdateDateColumn,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { RoleEntity } from './role.entity';
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -56,6 +60,15 @@ export class UserEntity {
   @Column({ select: false })
   @Field({ nullable: true })
   password: string;
+
+  @Column({ name: 'role_id' })
+  @Field({ nullable: true })
+  roleId: number;
+
+  @OneToOne(() => RoleEntity)
+  @JoinColumn({ name: 'role_id' })
+  @Field(() => RoleEntity, { nullable: true })
+  role?: RoleEntity;
 
   @CreateDateColumn({ name: 'created_at' })
   @Field()

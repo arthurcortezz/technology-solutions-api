@@ -5,6 +5,7 @@ export interface UserInterface {
   password: string;
   cpf: string;
   phone: string;
+  roleId: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;

@@ -17,6 +17,10 @@ import { InviteInterface } from './interfaces/invites-interface';
 export class InvitesController {
   constructor(private readonly service: InvitesService) {}
 
+  @Get()
+  async findAll(): Promise<InviteInterface[]> {
+    return this.service.findAll();
+  }
   @Get(':token')
   async findOne(@Param() data: { token: string }): Promise<InviteInterface> {
     return this.service.findOne(data.token);

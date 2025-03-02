@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
+import { RoleEntity } from './entities/role.entity';
 import { UsersController } from './users.controller';
 import { UserIdExistPipe } from './validate/user-id-exist.pipe';
 import { UserIdExistConstraint } from './validate/user-id-exist.constraint';
@@ -12,7 +13,7 @@ import { UserIdentificationNumberAlreadyExistConstraint } from './validate/user-
 
 @Module({
   controllers: [UsersController],
-  imports: [ConfigModule, TypeOrmModule.forFeature([UserEntity])],
+  imports: [ConfigModule, TypeOrmModule.forFeature([UserEntity, RoleEntity])],
   providers: [
     UsersService,
     UserIdExistPipe,

@@ -37,6 +37,35 @@ export class CreateTableUsers1740853699000 implements MigrationInterface {
         length: '100',
       },
       {
+        name: 'cep',
+        type: 'varchar',
+        length: '100',
+      },
+      {
+        name: 'neighborhood',
+        type: 'varchar',
+        length: '100',
+      },
+      {
+        name: 'street',
+        type: 'varchar',
+        length: '100',
+      },
+      {
+        name: 'uf',
+        type: 'varchar',
+        length: '100',
+      },
+      {
+        name: 'city',
+        type: 'varchar',
+        length: '100',
+      },
+      {
+        name: 'role_id',
+        type: 'int',
+      },
+      {
         name: 'created_at',
         type: 'timestamp',
         default: 'now()',

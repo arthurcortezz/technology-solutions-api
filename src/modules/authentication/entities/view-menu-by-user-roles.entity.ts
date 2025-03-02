@@ -3,7 +3,8 @@ import { ViewColumn, ViewEntity } from 'typeorm';
 @ViewEntity({
   name: 'view_menu_by_user_roles',
   expression: `
-    SELECT m.id           AS "id",
+    SELECT DISTINCT
+           m.id           AS "id",
            m.name         AS "menu",
            m.route        AS "route",
            m.menu_key     AS "menu_key",
@@ -29,6 +30,6 @@ export class ViewMenuByUserRolesEntity {
   @ViewColumn({ name: 'role_id' })
   roleId: number;
 
-  @ViewColumn({ name: 'menu_key' })
-  menuKey: string;
+  @ViewColumn({ name: 'key' })
+  key: string;
 }

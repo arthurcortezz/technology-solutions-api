@@ -19,10 +19,59 @@ export class InvitesService {
     private readonly dataSource: DataSource,
   ) {}
 
+  async findAll(): Promise<InviteInterface[]> {
+    try {
+      const invites = await this.invitesRepository.find({
+        where: { deletedAt: null },
+        order: { createdAt: 'DESC' },
+      });
+
+      if (!invites) {
+        throw new HttpException(
+          { message: 'Convites não encontrados.' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return invites;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        { message: 'Não foi possível encontrar os convites.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async findOne(token: string): Promise<InviteInterface> {
     try {
       const invite = await this.invitesRepository.findOne({
         where: { inviteCode: token },
+      });
+
+      if (!invite) {
+        throw new HttpException(
+          { message: 'Convite não encontrado.' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return invite;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        { message: 'Não foi possível criar o convite.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async findByEmail(email: string): Promise<InviteInterface> {
+    try {
+      const invite = await this.invitesRepository.findOne({
+        where: { email },
       });
 
       if (!invite) {
@@ -94,5 +143,15 @@ export class InvitesService {
 
   generateRandomCode(): string {
     return crypto.randomBytes(20).toString('hex');
+  }
+
+  updateStatus(
+    invite: InviteInterface,
+    status: string,
+  ): Promise<InviteInterface> {
+    return this.invitesRepository.save({
+      ...invite,
+      status: status,
+    });
   }
 }

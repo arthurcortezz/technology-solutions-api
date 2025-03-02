@@ -5,7 +5,9 @@ import {
   IsString,
   IsDefined,
   IsNotEmpty,
+  Validate,
 } from 'class-validator';
+import { AuthenticationCpfAlreadyExist } from '../validate/authentication-cpf-already-exist.constraint';
 
 export class CreateUserDto {
   @IsDefined({ message: 'O campo "name" é obrigatório!' })
@@ -18,25 +20,19 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'O campo "email" não pode ser vazio!' })
   email: string;
 
-  @IsDefined({ message: 'O campo "cpf" é obrigatório!' })
-  @IsString({ message: 'O campo "cpf" deve ser uma string!' })
-  @Matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
-    message: 'O campo "cpf" deve estar no formato XXX.XXX.XXX-XX!',
+  @IsNotEmpty()
+  @IsString()
+  @Validate(AuthenticationCpfAlreadyExist, {
+    message: 'CPF já cadastrado!',
   })
   cpf: string;
 
   @IsDefined({ message: 'O campo "phone" é obrigatório!' })
   @IsString({ message: 'O campo "phone" deve ser uma string!' })
-  @Matches(/^\(\d{2}\) \d{4,5}-\d{4}$/, {
-    message: 'O campo "phone" deve estar no formato (XX) XXXXX-XXXX!',
-  })
   phone: string;
 
   @IsDefined({ message: 'O campo "cep" é obrigatório!' })
   @IsString({ message: 'O campo "cep" deve ser uma string!' })
-  @Matches(/^\d{5}-\d{3}$/, {
-    message: 'O campo "cep" deve estar no formato XXXXX-XXX!',
-  })
   cep: string;
 
   @IsDefined({ message: 'O campo "uf" é obrigatório!' })

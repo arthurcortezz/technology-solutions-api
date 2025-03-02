@@ -10,12 +10,16 @@ import { UserEntity } from '../users/entities/user.entity';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationEmailAlreadyExist } from './validate/authentication-email-already-exist.constraint';
+import { AuthenticationCpfAlreadyExist } from './validate/authentication-cpf-already-exist.constraint';
+import { ViewMenuByUserRolesEntity } from './entities/view-menu-by-user-roles.entity';
+import { InvitesModule } from '../invites/invites.module';
 
 @Module({
   imports: [
     UsersModule,
     ConfigModule,
-    TypeOrmModule.forFeature([UserEntity]),
+    InvitesModule,
+    TypeOrmModule.forFeature([UserEntity, ViewMenuByUserRolesEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.APP_SECRET,
@@ -30,9 +34,10 @@ import { AuthenticationEmailAlreadyExist } from './validate/authentication-email
   ],
   controllers: [AuthenticationController],
   providers: [
-    AuthenticationService,
-    AuthenticationEmailAlreadyExist,
     JwtStrategy,
+    AuthenticationService,
+    AuthenticationCpfAlreadyExist,
+    AuthenticationEmailAlreadyExist,
   ],
   exports: [AuthenticationService],
 })
