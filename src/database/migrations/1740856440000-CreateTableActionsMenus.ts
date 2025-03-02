@@ -5,7 +5,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateTableActionsMenus1679220835211
+export class CreateTableActionsMenus1740856440000
   implements MigrationInterface
 {
   private readonly table = new Table({
