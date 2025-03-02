@@ -1,8 +1,13 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  Table,
+  QueryRunner,
+  TableForeignKey,
+  MigrationInterface,
+} from 'typeorm';
 
-export class CreateTableActions1740856149000 implements MigrationInterface {
+export class CreateTableInvites1740870489000 implements MigrationInterface {
   private readonly table = new Table({
-    name: 'menus',
+    name: 'invites',
     columns: [
       {
         name: 'id',
@@ -12,9 +17,16 @@ export class CreateTableActions1740856149000 implements MigrationInterface {
         generationStrategy: 'increment',
       },
       {
-        name: 'name',
+        name: 'email',
         type: 'varchar',
-        length: '255',
+      },
+      {
+        name: 'status',
+        type: 'varchar',
+      },
+      {
+        name: 'invite_code',
+        type: 'varchar',
       },
       {
         name: 'created_at',

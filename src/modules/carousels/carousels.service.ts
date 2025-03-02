@@ -2,15 +2,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Not, Repository } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { createOrder } from 'src/utils/create-order.util';
+import { createOrder } from '../../utils/create-order.util';
 import { CarouselEntity } from './entities/carousel.entity';
 import { CarouselCreateDto } from './dtos/carousel-create.dto';
 import { CarouselUpdateDto } from './dtos/carousel-update.dto';
 import { createFilters } from '../../utils/create-filters.utils';
-import { createPaginator } from 'src/utils/create-paginator.util';
-import { SortInterface } from 'src/utils/interfaces/sort.interface';
+import { createPaginator } from '../../utils/create-paginator.util';
 import { CarouselInterface } from './interfaces/carousel.interface';
-import { PaginatorInterface } from 'src/utils/interfaces/paginator.interface';
+import { SortInterface } from '../../utils/interfaces/sort.interface';
+import { PaginatorInterface } from '../../utils/interfaces/paginator.interface';
 import { CarouselFilterInterface } from './interfaces/carousel-filter.interface';
 
 @Injectable()

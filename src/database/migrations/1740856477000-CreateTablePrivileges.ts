@@ -5,7 +5,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateTablePrivileges1679220841770 implements MigrationInterface {
+export class CreateTablePrivileges1740856477000 implements MigrationInterface {
   private readonly table = new Table({
     name: 'privileges',
     columns: [
