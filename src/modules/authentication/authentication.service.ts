@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 
 import { JwtService } from '@nestjs/jwt';
-import { Not, Repository } from 'typeorm';
+import { DataSource, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   HttpStatus,
@@ -15,6 +15,7 @@ import { LoginDto } from './dtos/login.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { UserJwtInterface } from './interfaces/user-jwt.interface';
 import { UserInterface } from '../users/interfaces/user.interface';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -23,6 +24,8 @@ export class AuthenticationService {
     private readonly usersRepository: Repository<UserEntity>,
 
     private readonly jwtService: JwtService,
+
+    private readonly dataSource: DataSource,
   ) {}
 
   async login({
@@ -99,37 +102,46 @@ export class AuthenticationService {
     return { accessToken: this.jwtService.sign(payload), payload };
   }
 
-  async hasAgreedTermService(
-    userId: number,
-  ): Promise<{ message: string; user: UserJwtInterface; accessToken: string }> {
+  async createUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    const transactionManager = queryRunner.manager;
+
     try {
-      let user = await this.usersRepository.findOneOrFail({
-        where: { id: userId },
+      await queryRunner.startTransaction();
+
+      const existingUser = await this.usersRepository.findOne({
+        where: { email: createUserDto.email },
       });
 
-      if (!user?.acceptedAt) {
-        const acceptedAt = new Date();
-        acceptedAt.setHours(acceptedAt.getHours() + 3);
-        await this.usersRepository.update(userId, { acceptedAt });
+      if (existingUser) {
+        throw new BadRequestException('Email já cadastrado!');
+      }
+      const user = Object.assign(new UserEntity(), createUserDto);
+
+      user.hashPassword();
+
+      const newUser = this.usersRepository.create(user);
+
+      await transactionManager.save(newUser);
+
+      await queryRunner.commitTransaction();
+
+      return { message: 'Usuário criado com sucesso, faça o login.' };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+
+      if (error instanceof HttpException) {
+        throw error;
       }
 
-      user = await this.usersRepository.findOne({
-        where: { id: userId },
-        select: ['id', 'name', 'email', 'cpf', 'phone', 'password'],
-      });
-
-      const { accessToken, payload } = await this.signToken(user);
-
-      return {
-        message: 'Termo de serviço foi aceito',
-        accessToken,
-        user: payload,
-      };
-    } catch (error) {
       throw new HttpException(
-        { message: 'Não foi possível aceitar o termo de serviço.' },
+        { message: 'Não foi possível criar o usuário.' },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    } finally {
+      await queryRunner.release();
     }
   }
 }

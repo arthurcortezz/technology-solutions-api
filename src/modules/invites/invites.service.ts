@@ -19,6 +19,30 @@ export class InvitesService {
     private readonly dataSource: DataSource,
   ) {}
 
+  async findOne(token: string): Promise<InviteInterface> {
+    try {
+      const invite = await this.invitesRepository.findOne({
+        where: { inviteCode: token },
+      });
+
+      if (!invite) {
+        throw new HttpException(
+          { message: 'Convite não encontrado.' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return invite;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        { message: 'Não foi possível criar o convite.' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async create(
     data: InviteCreateDto,
   ): Promise<{ invite: InviteInterface; message: string }> {

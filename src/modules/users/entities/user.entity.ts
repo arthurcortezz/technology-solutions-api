@@ -3,7 +3,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Entity,
   Column,
-  OneToOne,
+  BeforeInsert,
   UpdateDateColumn,
   CreateDateColumn,
   DeleteDateColumn,
@@ -21,11 +21,11 @@ export class UserEntity {
   @Field({ nullable: true })
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   @Field({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   @Field({ nullable: true })
   cpf: string;
 
@@ -33,13 +33,29 @@ export class UserEntity {
   @Field({ nullable: true })
   phone: string;
 
+  @Column()
+  @Field({ nullable: true })
+  cep: string;
+
+  @Column()
+  @Field({ nullable: true })
+  uf: string;
+
+  @Column()
+  @Field({ nullable: true })
+  city: string;
+
+  @Column()
+  @Field({ nullable: true })
+  neighborhood: string;
+
+  @Column()
+  @Field({ nullable: true })
+  street: string;
+
   @Column({ select: false })
   @Field({ nullable: true })
   password: string;
-
-  @Column({ name: 'accepted_at' })
-  @Field({ nullable: true })
-  acceptedAt?: Date;
 
   @CreateDateColumn({ name: 'created_at' })
   @Field()
@@ -59,5 +75,13 @@ export class UserEntity {
 
   async checkPassword(plainPassword: string): Promise<boolean> {
     return (await bcrypt.compare(plainPassword, this.password)) as boolean;
+  }
+
+  @BeforeInsert()
+  async hashPassword(): Promise<void> {
+    const salt = await bcrypt.genSalt();
+    if (!/^\$2a\$\d+\$/.test(this.password)) {
+      this.password = await bcrypt.hash(this.password, salt);
+    }
   }
 }

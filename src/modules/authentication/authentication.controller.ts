@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { LoginDto } from './dtos/login.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { JWTAuthGuard } from '../../auth/jwt-auth.guard';
 import { AuthUser } from '../../utils/decorators/user.decorator';
 import { AuthenticationService } from './authentication.service';
@@ -36,5 +37,12 @@ export class AuthenticationController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @Post('create-account')
+  async createAccount(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<{ message: string }> {
+    return this.service.createUser(createUserDto);
   }
 }

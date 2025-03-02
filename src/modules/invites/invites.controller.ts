@@ -1,6 +1,8 @@
 import {
+  Get,
   Post,
   Body,
+  Param,
   Controller,
   UseInterceptors,
   ClassSerializerInterceptor,
@@ -14,6 +16,11 @@ import { InviteInterface } from './interfaces/invites-interface';
 @UseInterceptors(ClassSerializerInterceptor)
 export class InvitesController {
   constructor(private readonly service: InvitesService) {}
+
+  @Get(':token')
+  async findOne(@Param() data: { token: string }): Promise<InviteInterface> {
+    return this.service.findOne(data.token);
+  }
 
   @Post()
   async create(
