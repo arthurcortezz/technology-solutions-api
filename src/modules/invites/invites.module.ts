@@ -6,11 +6,12 @@ import { InvitesService } from './invites.service';
 import { InviteEntity } from './entities/invites.entity';
 import { InvitesController } from './invites.controller';
 import { MailService } from '../../utils/nodemailer/nodemailer.service';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Module({
   exports: [InvitesService],
   providers: [InvitesService, MailService, ConfigService],
   controllers: [InvitesController],
-  imports: [TypeOrmModule.forFeature([InviteEntity])],
+  imports: [TypeOrmModule.forFeature([InviteEntity, UserEntity])],
 })
 export class InvitesModule {}

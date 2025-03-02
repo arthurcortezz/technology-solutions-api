@@ -27,6 +27,11 @@ export class CreateTableMenus1740855927000 implements MigrationInterface {
         length: '255',
       },
       {
+        name: 'icon',
+        type: 'varchar',
+        length: '100',
+      },
+      {
         name: 'created_at',
         type: 'timestamp',
         default: 'now()',

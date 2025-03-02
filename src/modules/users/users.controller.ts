@@ -12,7 +12,6 @@ export class UsersController {
   constructor(private readonly service: UsersService) {}
 
   @Post()
-  @Roles('USERS_CRIAR')
   async create(
     @Body() data: UserCreateDto,
   ): Promise<{ user: UserInterface; message: string }> {

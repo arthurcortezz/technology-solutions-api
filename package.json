@@ -12,10 +12,10 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "migration:create": "cd src/database/migrations && npx typeorm-ts-node-commonjs migration:create",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/database/data-source.ts migration:run",
     "db:create": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs db:create -d ./src/database/data-source.ts --initialDatabase postgres",
-    "db:drop": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs db:drop -d ./src/database/data-source.ts --initialDatabase postgres"
+    "db:drop": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs db:drop -d ./src/database/data-source.ts --initialDatabase postgres",
+    "seed:run": "npx ts-node ./src/database/run-seeder.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
