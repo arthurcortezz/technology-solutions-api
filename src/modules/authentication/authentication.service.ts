@@ -166,7 +166,6 @@ export class AuthenticationService {
 
       return { message: 'Usuário criado com sucesso, faça o login.' };
     } catch (error) {
-      console.log('🚀 ~ AuthenticationService ~ createUser ~ error:', error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
